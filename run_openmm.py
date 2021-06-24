@@ -30,6 +30,12 @@ platform = mm.Platform.getPlatformByName('CPU')
 ### of the existing forces, you should do it here - after the
 ### System has been created, but before the Simulation is created.
 
+newForce = mm.CustomBondForce("0.5*k*(r-r0)^2")
+newForce.addGlobalParameter("k", 100)
+newForce.addGlobalParameter("r0", 2.0)
+newForce.addBond(1, 273)
+system.addForce(newForce)
+
 # Create a Simulation object by putting together the objects above
 simulation = app.Simulation(pdb.topology, system, integrator, platform)
 
