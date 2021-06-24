@@ -29,6 +29,11 @@ platform = mm.Platform.getPlatformByName('CPU')
 ### If you want to add any forces to your System or modify any
 ### of the existing forces, you should do it here - after the
 ### System has been created, but before the Simulation is created.
+newForce = mm.CustomBondForce("0.5*k*(r-r0)^2")
+newForce.addGlobalParameter("k", 1000)
+newForce.addGlobalParameter("r0", 2)
+newForce.addBond(56, 200)
+system.addForce(newForce)
 
 # Create a Simulation object by putting together the objects above
 simulation = app.Simulation(pdb.topology, system, integrator, platform)
@@ -61,7 +66,7 @@ simulation.step(2500)
 # the number of production steps + equilibration steps. Run the code to see why...
 # A: Christian Bale
 simulation.reporters.clear()
-simulation.reporters.append(app.DCDReporter('trajectory.dcd', 100))
+simulation.reporters.append(app.DCDReporter('trajectory-optionA-k-1000.dcd', 100))
 simulation.reporters.append(app.StateDataReporter(stdout, 500, step=True, 
     potentialEnergy=True, temperature=True, density=True, progress=True, 
     remainingTime=True, speed=True, totalSteps=22500, separator='\t'))
